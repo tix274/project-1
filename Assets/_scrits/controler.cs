@@ -4,9 +4,9 @@ using UnityEngine;
 public class controler : MonoBehaviour
 {
     [SerializeField] private Transform camera;
-    [SerializeField] private float sencax;
-    [SerializeField] private float sencay;
-     private Vector3 capsule;
+    [Range(1, 20)] [SerializeField] private float sencax;
+    [Range(1, 20)] [SerializeField] private float sencay;
+    private Vector3 capsule;
     private Rigidbody rb;
     [SerializeField] private float speed;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -47,15 +47,16 @@ public class controler : MonoBehaviour
 
     private void PlayerRotation()
     {
+        float deltax = Input.GetAxis("Mouse X") * sencax;
         float deltaY = Input.GetAxis("Mouse Y") * sencay;
 
-        float deltax = Input.GetAxis("Mouse X") * sencax;
-
         capsule.x+=-deltaY;
-        capsule.y+=deltax;
         capsule.x = Math.Clamp(capsule.x, -90, 90);
+
+        capsule.y+=deltax;
+
         transform.rotation = Quaternion.Euler(transform.rotation.x, capsule.y, 0);
-        camera.transform.rotation = Quaternion.Euler(capsule.x,camera.transform.rotation. y,0);
+        camera.transform.rotation = Quaternion.Euler(capsule.x, capsule.y, 0);
     }
 
     void limitSpeed()
